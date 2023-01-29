@@ -21,9 +21,9 @@ void main() async{
     statusBarBrightness: Brightness.dark,
   ));
   await di.init();
-  final LocalCachedData loggedIn = di.injector<LocalCachedData>();
-  final loginStatus = await loggedIn.getLoginStatus();
-  runApp(MyApp(loggedIn: loginStatus,));
+  // final LocalCachedData loggedIn = di.injector<LocalCachedData>();
+  // final loginStatus = await loggedIn.getLoginStatus();
+  runApp(MyApp(loggedIn: true,));
 }
 
 class MyApp extends StatelessWidget {

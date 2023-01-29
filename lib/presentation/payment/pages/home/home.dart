@@ -1,4 +1,5 @@
 import 'package:ejara_test_project/app/shared/app_colors/app_colors.dart';
+import 'package:ejara_test_project/app/shared/widgets/ejara_primary_button.dart';
 import 'package:ejara_test_project/presentation/payment/pages/widget/dexter_bottom_sheet.dart';
 import 'package:ejara_test_project/presentation/payment/pages/widget/ejara_option_tile.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,67 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
+  final moneyMethod = [
+    {
+      "title": "Orange money",
+      "subtitle": "696 7676 89",
+    },
+    {
+      "title": "MTN Mobile money",
+      "subtitle": "696 7676 89",
+    },
+    {
+      "title": "Orange money",
+      "subtitle": "696 7676 89",
+    },
+  ];
+
   void showPaymentOptionBottomSheet(BuildContext context){
-    MyBottomSheet().showNonDismissibleBottomSheet(context: context, height: MediaQuery.of(context).size.height/2,
+    MyBottomSheet().showNonDismissibleBottomSheet(context: context, height: MediaQuery.of(context).size.height/1.6,
         children:[
-          Text("select the mobile money method", textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: primaryBlue),),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(),
+              Text("select the mobile money method", textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: primaryBlue),),
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context).pop();
+                },
+                  child: const Icon(Icons.clear, color: primaryBlue,)),
+            ],
+          ),
           const Divider(),
+          ...List.generate(moneyMethod.length, (index){
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                child: Container(
+                  height: 60, width: double.maxFinite,
+                  decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(30)),
+                  child: Row(
+                    children: [
+                      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(moneyMethod[index]["title"]!,
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w700, color: primaryBlue), ),
+                          Text(moneyMethod[index]["title"]!,
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 9, fontWeight: FontWeight.w700, color: primaryBlue), )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+          EjaraPrimaryButton(
+            btnWidth: double.maxFinite, btnHeight: 50,
+            btnColor: primaryBlue.withOpacity(0.4),
+            btnTitle: "+ Another mobile money method",
+            buttonBorder: primaryBlue.withOpacity(0.4),
+          )
           ]
     );
   }
