@@ -20,8 +20,7 @@ class AppTheme{
   static ThemeData applicationTheme(){
     return ThemeData(
       primarySwatch: materialColor,
-      fontFamily: "SF-Pro",
-      errorColor: Colors.red,
+      fontFamily: "Mulish",
       textSelectionTheme: const TextSelectionThemeData(
           cursorColor: black,
           selectionColor: black,

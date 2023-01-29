@@ -1,36 +1,21 @@
-import 'package:dio/dio.dart';
 import 'package:ejara_test_project/domain/local/local_storage.dart';
+import 'package:ejara_test_project/domain/repository/auth/login_repository/login_impl.dart';
+import 'package:ejara_test_project/domain/repository/payment/payment_repository/payment_methods_impl.dart';
+import 'package:ejara_test_project/domain/repository/payment/payment_repository/payment_settings_per_method_impl.dart';
 import 'package:get_it/get_it.dart';
 
 final injector = GetIt.instance;
 
-Future<void> initializeDependencies() async {
-  // // Dio client
-  // injector.registerSingleton<Dio>(DioFactory(rBaseUrl).create());
-  //
-  // // Data - Remote
-  // injector.registerSingleton<CharacterService>(CharacterService(injector()));
-  // injector.registerSingleton<EpisodeService>(EpisodeService(injector()));
-  // injector.registerSingleton<LocationService>(LocationService(injector()));
-  //
-  // // Data - Local
-  //
-  // // Data - Repository
-  // injector.registerSingleton<CharacterRepository>(CharacterRepository(injector()));
-  // injector.registerSingleton<EpisodeRepository>(EpisodeRepository(injector()));
-  // injector.registerSingleton<LocationRepository>(LocationRepository(injector()));
-  //
-  // // Domain
-  // injector.registerSingleton<GetCharacters>(GetCharacters(injector()));
-  // injector.registerSingleton<GetCharacterDetail>(GetCharacterDetail(injector(), injector()));
-  //
-  // injector.registerSingleton<GetEpisodes>(GetEpisodes(injector()));
-  // injector.registerSingleton<GetEpisodeDetail>(GetEpisodeDetail(injector(), injector()));
-  //
-  // injector.registerSingleton<GetLocations>(GetLocations(injector()));
-  injector.registerSingleton<LocalCachedData>(LocalCachedData.instance);
-  //
-  // // ViewModel
-  // //injector.registerFactory(() => CharactersViewModel());
-  // injector.registerFactory(() => CharacterDetailViewModel());
+/// Initializes all dependencies.
+/// We register as lazy singletons to boost performance
+/// meaning, Get It would instantiate objects on demand
+
+Future<void> init() async {
+  // Data - Remote
+  injector.registerLazySingleton<LoginImpl>(() => LoginImpl(injector()));
+  injector.registerLazySingleton<PaymentMethodImpl>(() => PaymentMethodImpl(injector()));
+  injector.registerLazySingleton<PaymentSettingsPerImpl>(() => PaymentSettingsPerImpl(injector()));
+
+  // Data - Local
+  injector.registerLazySingleton<LocalCachedData>(() => LocalCachedData.instance);
 }

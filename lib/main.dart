@@ -1,12 +1,11 @@
-import 'dart:developer';
-
 import 'package:ejara_test_project/app/shared/theme_config/theme_config.dart';
 import 'package:ejara_test_project/presentation/auth/login/pages/login.dart';
-import 'package:ejara_test_project/presentation/vendor/pages/home/home.dart';
+import 'package:ejara_test_project/presentation/payment/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart'show kIsWeb;
 import 'dart:io';
+import 'app/di/injector.dart'as di;
 import 'domain/local/local_storage.dart';
 
 void main() async{
@@ -21,9 +20,10 @@ void main() async{
     statusBarIconBrightness: Brightness.dark,
     statusBarBrightness: Brightness.dark,
   ));
-  final loggedIn = await LocalCachedData.instance.getLoginStatus();
-  log(loggedIn.toString());
-  runApp(MyApp(loggedIn: loggedIn,));
+  await di.init();
+  final LocalCachedData loggedIn = di.injector<LocalCachedData>();
+  final loginStatus = await loggedIn.getLoginStatus();
+  runApp(MyApp(loggedIn: loginStatus,));
 }
 
 class MyApp extends StatelessWidget {

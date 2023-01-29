@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:ejara_test_project/app/di/injector.dart';
-import 'package:ejara_test_project/data/model/user/auth_user_response.dart';
+import 'package:ejara_test_project/data/model/auth/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -28,15 +28,15 @@ class LocalCachedData{
     return password;
   }
 
-  Future<void> cacheAuthUser({required AuthUserResponse authUserResponse}) async {
+  Future<void> cacheAuthUser({required LoginResponse loginResponse}) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("auth_user", json.encode(authUserResponse.toJson()));
+    sharedPreferences.setString("login_response", json.encode(loginResponse.toJson()));
   }
 
-  Future<AuthUserResponse?> getAuthUser() async {
+  Future<LoginResponse?> getAuthUser() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    String? authUser = sharedPreferences.getString("auth_user");
-    return authUser == null ? null : AuthUserResponse.fromJson(jsonDecode(authUser));
+    String? loginResponse = sharedPreferences.getString("login_response");
+    return loginResponse == null ? null : LoginResponse.fromJson(jsonDecode(loginResponse));
   }
 
   Future<bool> getLoginStatus() async {

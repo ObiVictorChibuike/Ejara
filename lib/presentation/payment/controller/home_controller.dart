@@ -1,20 +1,20 @@
-
-
-import 'package:ejara_test_project/domain/local/local_storage.dart';
-import 'package:flutter/material.dart';
+import 'package:ejara_test_project/app/di/injector.dart';
+import 'package:ejara_test_project/core/state/view_state.dart';
+import 'package:ejara_test_project/data/model/payment/payment_methods_response.dart';
+import 'package:ejara_test_project/domain/remote/dio_config/dio_data_state.dart';
+import 'package:ejara_test_project/domain/repository/payment/payment_repository/payment_methods_impl.dart';
+import 'package:flutter/foundation.dart';
 
 class HomeController with ChangeNotifier{
-  // int selectedIndex = 0;
-  // String? errorMessage;
-  // bool? notificationStatus;
-  // int? selectedVendorIndex;
-  //
-  // ViewState<GetAllRestaurantResponse> viewState = ViewState(state: ResponseState.EMPTY);
-  //
-  // void _setViewState(ViewState<GetAllRestaurantResponse> viewState) {
-  //   this.viewState = viewState;
-  // }
-  //
+  String? errorMessage;
+  final PaymentMethodImpl _login = injector<PaymentMethodImpl>();
+
+  ///View state for payment method response
+  ViewState<PaymentMethodResponse> viewState = ViewState(state: ResponseState.EMPTY);
+  void _setViewState(ViewState<PaymentMethodResponse> viewState) {
+    this.viewState = viewState;
+  }
+
   // ViewState<TopRatedVendorResponse> topRatedVendorViewState = ViewState(state: ResponseState.EMPTY);
   //
   // void _setTopRatedVendorViewState(ViewState<TopRatedVendorResponse> topRatedVendorViewState) {
@@ -38,22 +38,22 @@ class HomeController with ChangeNotifier{
   // void _setAllVendorViewState(ViewState<AllVendorResponse> allVendorViewState) {
   //   this.allVendorViewState = allVendorViewState;
   // }
-  //
-  // Future<void> getRestaurants() async {
-  //   _setViewState(ViewState.loading());
-  //   await _getRestaurants.noParamCall().then((value) async {
-  //     if(value is DataSuccess || value.data != null) {
-  //       _setViewState(ViewState.complete(value.data!));
-  //       update();
-  //     }if (value is DataFailed || value.data == null) {
-  //       if (kDebugMode) {
-  //         print(value.error);
-  //       }errorMessage = value.error.toString();
-  //       update();
-  //       _setViewState(ViewState.error(value.error.toString()));
-  //     }}
-  //   );
-  // }
+
+  Future<void> getPaymentMethod() async {
+    _setViewState(ViewState.loading());
+    await _login.noParamCall().then((value) async {
+      if(value is DataSuccess || value.data != null) {
+        _setViewState(ViewState.complete(value.data!));
+        notifyListeners();
+      }if (value is DataFailed || value.data == null) {
+        if (kDebugMode) {
+          print(value.error);
+        }errorMessage = value.error.toString();
+        notifyListeners();
+        _setViewState(ViewState.error(value.error.toString()));
+      }}
+    );
+  }
   // // UpdateUserResponse? updateUserResponse;
   //
   // Future<void> updateUserProfile(String firstName, lastName, email)async{

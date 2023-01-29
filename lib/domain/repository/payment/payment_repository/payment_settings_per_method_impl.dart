@@ -2,24 +2,24 @@ import 'package:dio/dio.dart';
 import 'package:ejara_test_project/app/shared/constants/http_status.dart';
 import 'package:ejara_test_project/app/shared/constants/strings.dart';
 import 'package:ejara_test_project/core/use_cases/use_cases.dart';
-import 'package:ejara_test_project/data/model/vendor/all_vendor_response.dart';
-import 'package:ejara_test_project/data/repository/dashboard_repository/vendor_respoitory.dart';
-import 'package:ejara_test_project/domain/remote/network_servcises/dio_service_config/dio_data_state.dart';
-import 'package:ejara_test_project/domain/remote/network_servcises/dio_service_config/dio_error.dart';
+import 'package:ejara_test_project/data/model/payment/payment_settings_per_method_response.dart';
+import 'package:ejara_test_project/data/repository/payment_repository/payment_repository.dart';
+import 'package:ejara_test_project/domain/remote/dio_config/dio_data_state.dart';
+import 'package:ejara_test_project/domain/remote/dio_config/dio_error.dart';
 import 'package:flutter/foundation.dart';
 
 
-class AllVendorRepositoryImpl implements noParamUseCases<DataState<AllVendorResponse>> {
-  final VendorRepository _vendorRepository;
+class PaymentSettingsPerImpl implements noParamUseCases<DataState<PaymentSettingsPerMethodResponse>> {
+  final PaymentRepository _paymentRepository;
 
-  AllVendorRepositoryImpl(this._vendorRepository);
+  PaymentSettingsPerImpl(this._paymentRepository);
 
   @override
-  Future<DataState<AllVendorResponse>> noParamCall() async{
+  Future<DataState<PaymentSettingsPerMethodResponse>> noParamCall() async{
     try {
-      final response = await _vendorRepository.getAllVendors();
+      final response = await _paymentRepository.getPaymentSettingsPerMethod();
       if (response!.statusCode == HttpResponseStatus.ok || response.statusCode == HttpResponseStatus.success) {;
-      return DataSuccess(AllVendorResponse.fromJson(response.data));
+      return DataSuccess(PaymentSettingsPerMethodResponse.fromJson(response.data));
       }
       return DataFailed(response.statusMessage);
     } on DioError catch (err) {

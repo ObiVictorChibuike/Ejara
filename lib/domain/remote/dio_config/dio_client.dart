@@ -8,7 +8,7 @@ class NetworkProvider{
 
   Dio _getDioInstance(){
     var dio = Dio(BaseOptions(
-        baseUrl: "http://ec2-18-211-69-232.compute-1.amazonaws.com",
+        baseUrl: "https://testbox-nellys-coin.ejaraapis.xyz/api/v1",
         connectTimeout:60000,
         receiveTimeout:60000
     ));
@@ -67,6 +67,13 @@ class AuthorizationInterceptor extends Interceptor {
     }
     options.headers["Accept"] = "application/json";
     options.headers["Content-Type"] = "application/json";
+    options.headers["api-key"] = "K[bb@c*heYNTOd[UVBmLevq0(";
+    options.headers["client-id"] = "02d5f007e2";
+    // options.headers['app-version'] = "3.1.5";
+    // options.headers['app-platform'] = "android-test";
+    // options.headers['client'] = "mobile";
+    // options.headers["Accept-language"] = "en";
+
     super.onRequest(options, handler);
   }
 }

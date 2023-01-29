@@ -9,6 +9,8 @@ const persianRed = Color(0xffCC2929);
 const thunder = Color(0xff201E1F);
 const iron = Color(0xffD6D8DB);
 const shark = Color(0xff292D32);
+const primaryBlue = Color(0xFF4B61A7);
+const backgroundColor = Color(0xffEEEEEE);
 
 Map<int, Color> accentRed = <int, Color>{
   50: const Color(0xFFfde6e8),

@@ -14,7 +14,7 @@ class ErrorScreen extends StatelessWidget {
           height: 90,
           width: 90,
           color: Colors.transparent,
-          child: Image.asset(AssetPath.error),
+          child: const Icon(Icons.error_outline),
         ),),
         const SizedBox(height: 8,),
         Text("To get the best experience \non Dexter App, you need to be \nconnected to the internet.", textAlign: TextAlign.center,

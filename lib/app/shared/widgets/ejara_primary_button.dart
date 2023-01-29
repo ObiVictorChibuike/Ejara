@@ -1,7 +1,7 @@
 import 'package:ejara_test_project/app/shared/app_colors/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class DexterPrimaryButton extends StatelessWidget {
+class EjaraPrimaryButton extends StatelessWidget {
   final String? btnTitle;
   final Color? btnColor;
   final Color? titleColor;
@@ -12,7 +12,7 @@ class DexterPrimaryButton extends StatelessWidget {
   final Color? buttonBorder;
   final double? btnTitleSize;
   final Widget? buttonWidget;
-  const DexterPrimaryButton({Key? key, this.btnTitle, this.btnColor, this.titleColor, this.onTap, this.btnHeight, this.btnWidth, this.borderRadius, this.buttonBorder, this.btnTitleSize, this.buttonWidget}) : super(key: key);
+  const EjaraPrimaryButton({Key? key, this.btnTitle, this.btnColor, this.titleColor, this.onTap, this.btnHeight, this.btnWidth, this.borderRadius, this.buttonBorder, this.btnTitleSize, this.buttonWidget}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,8 @@ class DexterPrimaryButton extends StatelessWidget {
           splashColor: Colors.white24,
           borderRadius: const BorderRadius.all(Radius.circular(24.0)),
           onTap: onTap,
-          child: buttonWidget != null ? buttonWidget : Padding(
-            padding: EdgeInsets.only(
+          child: buttonWidget ?? Padding(
+            padding: const EdgeInsets.only(
                 top: 12, bottom: 12, left: 18, right: 18),
             child: Center(
               child: Text(

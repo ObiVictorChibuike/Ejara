@@ -2,7 +2,7 @@ import 'package:ejara_test_project/app/shared/app_colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DexterTextField extends StatelessWidget {
+class EjaraTextField extends StatelessWidget {
   final String? labelText;
   final TextStyle? labelStyle;
   final TextInputType? keyboardType;
@@ -33,7 +33,7 @@ class DexterTextField extends StatelessWidget {
   final String? initialValue;
   final bool? readOnly;
 
-  const DexterTextField({
+  const EjaraTextField({
     Key? key,
     this.labelTitle,
     this.height,
