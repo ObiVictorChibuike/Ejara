@@ -136,6 +136,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 30),
                           EjaraPrimaryButton(
+                            onTap: (){
+                              Navigator.of(context).pop();
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddMethod()));
+                            },
                             btnWidth: double.maxFinite, btnHeight: 50,
                             btnColor: primaryBlue.withOpacity(0.4),
                             btnTitle: "+ Another mobile money method",
@@ -144,8 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 30),
                           EjaraPrimaryButton(
                             onTap: (){
-                              Navigator.of(context).pop();
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddMethod()));
+
                             },
                             buttonBorder: primaryBlue, btnTitle: "Continue",
                             borderRadius: 15, titleColor: white, btnHeight: 56, btnTitleSize: 16,
