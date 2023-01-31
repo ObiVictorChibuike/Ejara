@@ -1,5 +1,7 @@
 import 'package:ejara_test_project/app/shared/app_colors/app_colors.dart';
 import 'package:ejara_test_project/app/shared/widgets/ejara_primary_button.dart';
+import 'package:ejara_test_project/app/shared/widgets/empty_screen.dart';
+import 'package:ejara_test_project/app/shared/widgets/error_screen.dart';
 import 'package:ejara_test_project/app/shared/widgets/loading_widget.dart';
 import 'package:ejara_test_project/core/state/view_state.dart';
 import 'package:ejara_test_project/presentation/payment/pages/widget/dexter_bottom_sheet.dart';
@@ -57,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(top: false, bottom: false,
@@ -75,6 +76,85 @@ class _HomeScreenState extends State<HomeScreen> {
           body: ChangeNotifierProvider(create: (BuildContext context) => HomeViewModel(),
             child: Builder(builder: (context){
               final paymentMethod = Provider.of<HomeViewModel>(context);
+              void showPaymentOptionBottomSheet(BuildContext context){
+                MyBottomSheet().showNonDismissibleBottomSheet(context: context, height: MediaQuery.of(context).size.height/1.5,
+                    children:[
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const SizedBox(),
+                          Text("select the mobile money method", textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 15, fontWeight: FontWeight.w700, color: primaryBlue),),
+                          GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).pop();
+                              },
+                              child: const Icon(Icons.clear, color: primaryBlue,)),
+                        ],
+                      ),
+                      const Divider(),
+                      paymentMethod.paymentSettingsPerMethodViewState.data!.data!.isNotEmpty ?
+                      Column(
+                        children: [
+                          ...List.generate(moneyMethod.length, (index){
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Card(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  height: 55, width: double.maxFinite,
+                                  decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(12)),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 10, width: 10,
+                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: dustyGray)),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(moneyMethod[index]["title"]!,
+                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w700, color: primaryBlue), ),
+                                          Text(moneyMethod[index]["title"]!,
+                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 9, fontWeight: FontWeight.w700, color: primaryBlue), )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                          const SizedBox(height: 25),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(height: 1,  width: MediaQuery.of(context).size.width / 3, color: dustyGray,),
+                              Text("Or", style: Theme.of(context).textTheme.bodyText1!.copyWith(color: shark, fontSize: 14, fontWeight: FontWeight.w400)),
+                              Container(height: 1,  width: MediaQuery.of(context).size.width / 3, color: dustyGray,),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          EjaraPrimaryButton(
+                            btnWidth: double.maxFinite, btnHeight: 50,
+                            btnColor: primaryBlue.withOpacity(0.4),
+                            btnTitle: "+ Another mobile money method",
+                            buttonBorder: primaryBlue.withOpacity(0.4),
+                          ),
+                          const SizedBox(height: 30),
+                          EjaraPrimaryButton(
+                            onTap: (){
+                              Navigator.of(context).pop();
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddMethod()));
+                            },
+                            buttonBorder: primaryBlue, btnTitle: "Continue",
+                            borderRadius: 15, titleColor: white, btnHeight: 56, btnTitleSize: 16,
+                          ),
+                        ],
+                      ) : const EmptyScreen(emptyScreenMessage: "No Data",),
+                    ]
+                );
+              }
               if(paymentMethod.viewState.state == ResponseState.LOADING){
                 return const LoadingWidget(loadingMessage: "Loading",);
               }else if (paymentMethod.viewState.state == ResponseState.COMPLETE){
@@ -129,9 +209,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ...List.generate(paymentMethod.viewState.data!.data!.length, (index){
                         final data = paymentMethod.viewState.data!.data!;
                         return GestureDetector(
-                          onTap: (){
-                            paymentMethod.getPaymentSettingsPerMethod(id: data[index].id.toString());
-                            // showPaymentOptionBottomSheet(context);
+                          onTap: () async {
+                            await paymentMethod.getPaymentSettingsPerMethod(id: data[index].id.toString());
+                            showPaymentOptionBottomSheet(context);
                           },
                           child: EjaraOptionTile(icon: index == 0 ? const Icon(Iconsax.dollar_circle)
                               : index == 1 ? const Icon(Iconsax.mobile) : index == 2 ? const Icon(Iconsax.bank)
@@ -143,7 +223,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 );
-              }return     const SizedBox.shrink();
+              }else if(paymentMethod.viewState.state == ResponseState.EMPTY){
+                return const EmptyScreen(emptyScreenMessage: "No Data",);
+              }else if(paymentMethod.viewState.state == ResponseState.ERROR){
+                return const ErrorScreen();
+              }return const SizedBox.shrink();
             },),
           ),
         )
