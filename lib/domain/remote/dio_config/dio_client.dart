@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:ejara_test_project/app/di/injector.dart';
 import 'package:ejara_test_project/domain/local/local_storage.dart';
 import 'dio_error.dart';
 import 'dio_intercepter.dart';
 
 class NetworkProvider{
-
+  final String? baseUrl;
+  NetworkProvider({this.baseUrl});
   Dio _getDioInstance(){
     var dio = Dio(BaseOptions(
-        baseUrl: "https://testbox-nellys-coin.ejaraapis.xyz/api/v1",
+        baseUrl: baseUrl!,
         connectTimeout:60000,
         receiveTimeout:60000
     ));
@@ -60,8 +60,9 @@ class AuthorizationInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
-    final getToken = injector<LocalCachedData>();
-    String? token = await getToken.getAuthToken();
+    ///Initialize local Storage
+    LocalCachedData localCachedData = LocalCachedData();
+    String? token= await localCachedData.getAuthToken();
     if (token != null && token.isNotEmpty) {
       options.headers["Authorization"] = "Bearer $token";
     }

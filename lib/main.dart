@@ -1,12 +1,12 @@
 import 'package:ejara_test_project/app/shared/theme_config/theme_config.dart';
 import 'package:ejara_test_project/presentation/auth/login/pages/login.dart';
+import 'package:ejara_test_project/presentation/auth/login/viewModel/auth_view_model.dart';
 import 'package:ejara_test_project/presentation/payment/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart'show kIsWeb;
 import 'dart:io';
-import 'app/di/injector.dart'as di;
-import 'domain/local/local_storage.dart';
+import 'package:provider/provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,6 @@ void main() async{
     statusBarIconBrightness: Brightness.dark,
     statusBarBrightness: Brightness.dark,
   ));
-  await di.init();
   // final LocalCachedData loggedIn = di.injector<LocalCachedData>();
   // final loginStatus = await loggedIn.getLoginStatus();
   runApp(MyApp(loggedIn: true,));
@@ -46,10 +45,15 @@ class MyApp extends StatelessWidget {
           FocusManager.instance.primaryFocus!.unfocus();
         }
       },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.applicationTheme(),
-        home: loggedIn == true ? const HomeScreen() : const Login(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (c) => AuthViewModel()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.applicationTheme(),
+          home: const Login(),
+        ),
       ),
     );
   }

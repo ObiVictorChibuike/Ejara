@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 const white = Color(0xffffffff);
 const greenPea = Color(0xff276E59);
-const tulipTree = Color(0xffEBA53B);
 const black = Color(0xff000000);
 const dustyGray = Color(0xff999999);
 const persianRed = Color(0xffCC2929);

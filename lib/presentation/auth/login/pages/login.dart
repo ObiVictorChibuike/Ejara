@@ -1,11 +1,17 @@
 import 'package:ejara_test_project/app/shared/app_assets/assets_path.dart';
 import 'package:ejara_test_project/app/shared/app_colors/app_colors.dart';
+import 'package:ejara_test_project/app/shared/utils/flush_bar.dart';
 import 'package:ejara_test_project/app/shared/utils/form_mixin.dart';
+import 'package:ejara_test_project/app/shared/utils/progress_dialog.dart';
 import 'package:ejara_test_project/app/shared/widgets/ejara_primary_button.dart';
 import 'package:ejara_test_project/app/shared/widgets/dexter_text_field.dart';
+import 'package:ejara_test_project/core/state/view_state.dart';
+import 'package:ejara_test_project/presentation/auth/login/viewModel/auth_view_model.dart';
+import 'package:ejara_test_project/presentation/payment/pages/home/home.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
 
 class Login extends StatefulWidget {
@@ -17,10 +23,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> with FormMixin{
   bool _obscureText = true;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final userNameController = TextEditingController(text: "ejaraTests");
+  final passwordController = TextEditingController(text: "CmKVGexi%REJjn!u65BI7PlR5");
   //Keys
-  final scaffoldKey = GlobalKey <ScaffoldState>();
   final formKey = GlobalKey <FormState>();
   final buttonIcons = [
     {
@@ -32,8 +37,10 @@ class _LoginState extends State<Login> with FormMixin{
       "title": "Apple"
     }
   ];
+
   @override
   Widget build(BuildContext context) {
+    AuthViewModel login = Provider.of<AuthViewModel>(context);
     return SafeArea(top: false, bottom: false,
         child: Scaffold(
           body: Padding(
@@ -56,9 +63,9 @@ class _LoginState extends State<Login> with FormMixin{
                   ),
                   EjaraTextField(
                     minLines: null, maxLines: 1, expands: false,
-                    hintText: "abc@xyz.com",
-                    controller: emailController,
-                    validator: isValidEmailAddress,
+                    hintText: "John Doe",
+                    controller: userNameController,
+                    validator: isRequired,
                   ),
                   const SizedBox(height: 24,),
                   Text('Password',
@@ -73,7 +80,23 @@ class _LoginState extends State<Login> with FormMixin{
                     minLines: null, maxLines: 1, expands: false,
                     hintText: "*********",
                     controller: passwordController,
-                    validator: isRequired,
+                    validator: validatePassword(
+                        shouldContainSpecialChars: true,
+                        shouldContainCapitalLetter: true,
+                        shouldContainNumber: true,
+                        minLength: 8,
+                        maxLength: 32,
+                        errorMessage:
+                        "Password must be up to 8 characters",
+                        onNumberNotPresent: () {
+                          return "Password must contain number";
+                        },
+                        onSpecialCharsNotPresent: () {
+                          return "Password must contain special characters";
+                        },
+                        onCapitalLetterNotPresent: () {
+                          return "Password must contain capital letters";
+                        }),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -87,19 +110,28 @@ class _LoginState extends State<Login> with FormMixin{
                     ),
                   ),
                   const SizedBox(height: 8,),
-                  GestureDetector(
-                    onTap: (){
-
-                    },
-                    child: Align(alignment: Alignment.centerRight,
-                        child: Text("Forgot Password?", style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w400, color: greenPea),)),
-                  ),
+                  Align(alignment: Alignment.centerRight,
+                      child: Text("Forgot Password?", style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w400, color: greenPea),)),
                   const SizedBox(height: 54,),
                   EjaraPrimaryButton(
-                    onTap: (){
+                    onTap: () async {
+                      if(formKey.currentState!.validate()){
+                        formKey.currentState!.save();
+                        ProgressDialogHelper(context).loadingState;
+                        await login.login( userName: userNameController.text, password: passwordController.text);
+                        if(login.viewState.state == ResponseState.COMPLETE){
+                          ProgressDialogHelper(context).loadStateTerminated;
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                          FlushBarHelper(context, "Login Successful").showSuccessBar;
+                        }else if(login.viewState.state == ResponseState.ERROR){
+                          ProgressDialogHelper(context).loadStateTerminated;
+                          FlushBarHelper(context, login.errorMessage).showErrorBar;
+                        }
+                      }
+                      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
                     },
-                    buttonBorder: greenPea, btnTitle: "Sign In",
-                    borderRadius: 30, titleColor: white, btnHeight: 56, btnTitleSize: 16,
+                    buttonBorder: primaryBlue, btnTitle: "Sign In",
+                    borderRadius: 15, titleColor: white, btnHeight: 56, btnTitleSize: 16,
                   ),
                   const SizedBox(height: 24,),
                   Align(alignment: Alignment.center,

@@ -6,10 +6,10 @@ class AuthServices{
 
   Future<Response?> login({required String userName, required String password}) async {
     var postBody = jsonEncode({
-        "userName":  userName,
+        "log":  userName,
         "password": password,
     });
-    final response = await NetworkProvider().call(path: "/auth/login", method: RequestMethod.post, body: postBody);
+    final response = await NetworkProvider(baseUrl: "https://testbox-nellys-coin.ejaraapis.xyz/api/v1").call(path: "/auth/login", method: RequestMethod.post, body: postBody);
     return response;
   }
 

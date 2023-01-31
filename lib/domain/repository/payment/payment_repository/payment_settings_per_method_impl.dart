@@ -9,15 +9,15 @@ import 'package:ejara_test_project/domain/remote/dio_config/dio_error.dart';
 import 'package:flutter/foundation.dart';
 
 
-class PaymentSettingsPerImpl implements noParamUseCases<DataState<PaymentSettingsPerMethodResponse>> {
+class PaymentSettingsPerImpl implements useCase<DataState<PaymentSettingsPerMethodResponse>, PaymentSettingsParam> {
   final PaymentRepository _paymentRepository;
 
   PaymentSettingsPerImpl(this._paymentRepository);
 
   @override
-  Future<DataState<PaymentSettingsPerMethodResponse>> noParamCall() async{
+  Future<DataState<PaymentSettingsPerMethodResponse>> execute({required PaymentSettingsParam params}) async{
     try {
-      final response = await _paymentRepository.getPaymentSettingsPerMethod();
+      final response = await _paymentRepository.getPaymentSettingsPerMethod(id: params.id!);
       if (response!.statusCode == HttpResponseStatus.ok || response.statusCode == HttpResponseStatus.success) {;
       return DataSuccess(PaymentSettingsPerMethodResponse.fromJson(response.data));
       }
@@ -35,4 +35,9 @@ class PaymentSettingsPerImpl implements noParamUseCases<DataState<PaymentSetting
       return DataFailed(err.toString());
     }
   }
+}
+
+class PaymentSettingsParam{
+  final String? id;
+  PaymentSettingsParam(this.id,);
 }

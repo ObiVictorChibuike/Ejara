@@ -105,21 +105,21 @@ class EjaraTextField extends StatelessWidget {
                 .textTheme
                 .bodyText2
                 ?.copyWith(color: const Color(0xff868484), fontSize: 16),
-        enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(color: Color(0xff868484), width: 0.7)),
-        focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(color: Color(0xff868484), width: 0.7)),
-        focusedErrorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(color: Color(0xff868484), width: 0.7)),
-        border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(color: Color(0xff868484), width: 0.7)),
-        errorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            borderSide: BorderSide(color: Color(0xff868484), width: 0.7)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderSide: BorderSide(color: primaryBlue.withOpacity(0.4), width: 0.7)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderSide: BorderSide(color: primaryBlue.withOpacity(0.4), width: 0.7)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderSide: BorderSide(color: primaryBlue.withOpacity(0.4), width: 0.7)),
+        border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderSide: BorderSide(color: primaryBlue.withOpacity(0.4), width: 0.7)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderSide: BorderSide(color: primaryBlue.withOpacity(0.4), width: 0.7)),
         fillColor: filledColor ?? Color(0xffD6D8DB),
         filled: true,
         isDense: isDense ?? true,

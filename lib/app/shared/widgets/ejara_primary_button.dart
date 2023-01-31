@@ -19,14 +19,14 @@ class EjaraPrimaryButton extends StatelessWidget {
     return Container(
       height: btnHeight ?? 48, width: btnWidth ?? double.maxFinite,
       decoration: BoxDecoration(
-          color: btnColor ?? greenPea,
-          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 24.0)),
-          border: Border.all(color: buttonBorder ?? greenPea)),
+          color: btnColor ?? primaryBlue,
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 10.0)),
+          border: Border.all(color: buttonBorder ?? primaryBlue)),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           splashColor: Colors.white24,
-          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
           onTap: onTap,
           child: buttonWidget ?? Padding(
             padding: const EdgeInsets.only(

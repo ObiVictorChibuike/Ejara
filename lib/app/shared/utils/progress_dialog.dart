@@ -21,7 +21,7 @@ class ProgressDialogHelper{
               itemBuilder: (BuildContext context, int index) {
                 return DecoratedBox(
                   decoration: BoxDecoration(
-                    color: index.isEven ? greenPea : greenPea,
+                    color: index.isEven ? primaryBlue : primaryBlue,
                   ),
                 );
               },
